@@ -1,12 +1,40 @@
 <h1>Watchlist</h1>
-<form>
-  <input type="text" ng-model='newSymbol' placeholder="Enter a symbol">
-  <input type="submit" value="Add">
-</form>
 <div ng-controller="StocksCtrl">
+  <form>
+    <select ui-select2='select2Options' ng-model='newCompany', data-placeholder="Enter the name of a listed company", ng-required="true">
+      <option value=""></option>
+      <option ng-repeat="stock in stocklist" value=""></option>
+    </select>
+  </form>
+  
+  <div ng-show="loading" id="loading">
+    Loading, please wait!
+  </div>
+  <div ng-show="error">
+    There was a problem with the Yahoo Finance API. Please try again later.
+  </div>
   <ul>
     <li ng-repeat="stock in stocks">
-      {{stock.symbol}}, {{stock.name}}
+      <div id='symbol'>
+        
+      </div>
+      <div id='name'>
+        
+      </div>
+      <span>Bid:</span>,
+      <span>Ask:</span>,
+      <span>Year Low:</span>,
+      <span>Year High:</span>,
+      <div id='links'>
+        Show Chart: <input type="checkbox" ng-model="showStockChart">
+        <a href='' ng-click="updateStock(stock.id, $index)">Update</a>
+        <a href='' ng-click="deleteStock(stock.id, $index)" id='delete'>Delete</a>
+      </div>
+      <div my-chart stockid="stock.id" stocksymbol="stock.symbol" stockname="stock.name" ng-show="showStockChart" id='chart' style='padding-right: 30px; padding-left: 20px;padding-top: 15px;'>
+        <div id='loading_chart'>
+          Loading Chart, this might take a while!
+        </div>
+      </div>
     </li>
   </ul>
 </div>
